@@ -1,0 +1,22 @@
+{
+  "name": "covid-daily-cases-api",
+  "version": "0.0.1",
+  "description": "An api that retrieves detail data on Covid cases",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Júlio Mendonça da Costa",
+  "license": "Apache 2.0",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv": "^6.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^4.6.0"
+  }
+}
