@@ -1,15 +1,9 @@
-# syntax=docker/dockerfile:1
-
 FROM node:12.18.1
-
-ENV NODE_ENV=production
-
-WORKDIR /app
 
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 
-COPY server.js .
 COPY configMongoClient.js .
+COPY server.js .
 
-CMD [ "node", "server.js"]
+CMD node server.js

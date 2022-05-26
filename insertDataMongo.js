@@ -24,7 +24,7 @@ var csv_parser = parse({ columns: false }, function (err, records) {
     insertData(list_of_documents);
 });
 
-fs.createReadStream('covid-variants.csv').pipe(csv_parser);
+fs.createReadStream('./covid-variants.csv').pipe(csv_parser);
 
 async function insertData(list_of_documents) {
 
