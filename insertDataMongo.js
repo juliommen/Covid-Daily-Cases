@@ -17,7 +17,6 @@ var csv_parser = parse({ columns: false }, function (err, records) {
                 "num_sequences": parseInt(records[i][3]),
             }
             list_of_documents.push(document);
-
         }
     }
 
@@ -35,8 +34,7 @@ async function insertData(list_of_documents) {
         await client.connect();
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
-        const result = await collection.insertMany(list_of_documents);
-        console.log(`${result.insertedCount} documents were inserted`);
+        await collection.insertMany(list_of_documents);
     } catch (err) {
         console.log(err.stack);
     } finally {

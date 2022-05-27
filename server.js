@@ -11,13 +11,11 @@ const cache = {};
 
 app.set('json spaces', 2)
 
-//Retornar um Status: 200 e uma Mensagem "Backend Challenge 2022 🏅 - Covid Daily Cases"
 app.get("/", (req, res) => {
     res.status(200).send({status:200,msg: "Backend Challenge 2022 🏅 - Covid Daily "})
 })
 
 
-//Listar todos os registros da base de dados no dia selecionado, agrupados por país e separados por variante.
 app.get("/cases/:date/count", (req, res) => {
     const data_input = req.params.date;
 
@@ -85,8 +83,6 @@ app.get("/cases/:date/count", (req, res) => {
 })
 
 
-//Listar todos os registros da base de dados, retornando a soma dos casos registrados até a data selecionada, 
-//agrupados por país e separados por variante.
 app.get("/cases/:date/cumulative", (req, res) => {
     const data_input = req.params.date;
 
@@ -170,7 +166,6 @@ app.get("/cases/:date/cumulative", (req, res) => {
 })
 
 
-//Listar as datas disponíveis no dataset
 app.get("/dates", (req, res) => {
 
     if (cache["/dates"] != undefined) {
@@ -237,6 +232,10 @@ app.listen(8080, () => {
 
 
 function dateValidator(date) {
+
+    if (date.length != 10) {
+        return false;
+    }
 
     var date_check = new Date(parseInt(date.slice(0, 4)), parseInt(date.slice(5, 7)) - 1, parseInt(date.slice(8)));
     date_check = date_check.toISOString().slice(0, 10)

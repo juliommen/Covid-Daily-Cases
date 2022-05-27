@@ -2,7 +2,7 @@
 
 API for retrieving data about COVID cases of various locations around the world, detailing registered variants and its quantities by date (daily or accumulated).
 
-API url: https://coviddailycases.us-south.cf.appdomain.cloud/
+API base url: https://coviddailycases.us-south.cf.appdomain.cloud/
 
 # Instructions
 
