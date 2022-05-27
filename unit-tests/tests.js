@@ -1,8 +1,7 @@
 ﻿const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = chai.expect
-////const baseUrl = "https://coviddailycases.us-south.cf.appdomain.cloud"
-const baseUrl = "http://localhost:8080"
+const baseUrl = "https://coviddailycases.us-south.cf.appdomain.cloud"
 
 chai.use(chaiHttp);
 
@@ -63,7 +62,7 @@ describe("Count cases route test - Invalid date 1", function () {
             .get('/cases/2020-13-11/count')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })
@@ -76,7 +75,7 @@ describe("Count cases route test - Invalid date 2", function () {
             .get('/cases/2020-12-32/count')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })
@@ -88,7 +87,7 @@ describe("Count cases route test - Invalid date 3", function () {
             .get('/cases/20201230/count')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })
@@ -126,7 +125,7 @@ describe("Accumulated cases route test - Invalid date 1", function () {
             .get('/cases/2020-13-11/cumulative')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })
@@ -139,7 +138,7 @@ describe("Accumulated cases route test - Invalid date 2", function () {
             .get('/cases/2020-12-32/cumulative')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })
@@ -153,7 +152,7 @@ describe("Accumulated cases route test - Invalid date 3", function () {
             .get('/cases/20201230/cumulative')
             .end(function (err, res) {
                 expect(res).to.have.status(500);
-                expect(res.body.error_msg).to.equal("Incorrect date input. Use this format: 'yyyy-mm-dd'.");
+                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
     })

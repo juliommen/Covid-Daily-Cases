@@ -20,7 +20,7 @@ app.get("/cases/:date/count", (req, res) => {
     const data_input = req.params.date;
 
     if (!dateValidator(data_input)) {
-        res.status(500).json({ "status": 500, "error_msg": "Incorrect date input. Use this format: 'yyyy-mm-dd'."  });
+        res.status(500).json({ "status": 500, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'."  });
         return;
     }
 
@@ -87,7 +87,7 @@ app.get("/cases/:date/cumulative", (req, res) => {
     const data_input = req.params.date;
 
     if (!dateValidator(data_input)) {
-        res.status(500).json({ "status": 500, "error_msg": "Incorrect date input. Use this format: 'yyyy-mm-dd'." });
+        res.status(500).json({ "status": 500, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'." });
         return;
     }
 
