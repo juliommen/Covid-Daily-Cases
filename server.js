@@ -7,6 +7,8 @@ app.use(cors_app());
 const dbName = "kaggle";
 const collectionName = "covid-daily-cases";
 
+const cache = {};
+
 app.set('json spaces', 2)
 
 //Retornar um Status: 200 e uma Mensagem "Backend Challenge 2021 🏅 - Covid Daily Cases"
@@ -24,7 +26,12 @@ app.get("/cases/:date/count", (req, res) => {
         return;
     }
 
-    async function run() {
+    if (cache["/cases/+" + data_input + "/count"] != undefined) {
+        res.status(200).json({ "date": data_input, "covid_daily_cases": cache["/cases/+" + data_input + "/count"] });
+        return;
+    }
+
+    async function getData() {
         try {
             await client.connect();
 
@@ -58,9 +65,11 @@ app.get("/cases/:date/count", (req, res) => {
             }
 
             if (list_of_documents.length == 0) {
-                res.status(500).json({ "status": 500, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
+                res.status(500).json({ "status": 500, "error_msg": "No data found for this particular date. Find available dates accessing the route '/dates'." });
                 return;
             } 
+
+            cache["/cases/+" + data_input + "/count"] = list_of_documents;
 
             res.status(200).json({ "date": data_input,"covid_daily_cases": list_of_documents });
            
@@ -71,7 +80,7 @@ app.get("/cases/:date/count", (req, res) => {
         }
     }
 
-    run().catch(console.dir);
+    getData();
     
 })
 
@@ -86,7 +95,12 @@ app.get("/cases/:date/cumulative", (req, res) => {
         return;
     }
 
-    async function run() {
+    if (cache["/cases/+" + data_input + "/cumulative"] != undefined) {
+        res.status(200).json({ "date": data_input, "covid_accumulated_cases": cache["/cases/+" + data_input + "/cumulative"] });
+        return;
+    }
+
+    async function getData() {
         try {
             await client.connect();
 
@@ -141,6 +155,8 @@ app.get("/cases/:date/cumulative", (req, res) => {
                 return;
             }
 
+            cache["/cases/+" + data_input + "/cumulative"] = list_of_documents;
+
             res.status(200).json({ "date": data_input, "covid_accumulated_cases": list_of_documents });
             
         } catch (err) {
@@ -150,14 +166,19 @@ app.get("/cases/:date/cumulative", (req, res) => {
         }
     }
 
-    run().catch(console.dir);
+    getData();
 })
 
 
 //Listar as datas disponíveis no dataset
 app.get("/dates", (req, res) => {
 
-    async function run() {
+    if (cache["/dates"] != undefined) {
+        res.status(200).json(cache["/dates"]);
+        return;
+    }
+
+    async function getData() {
         try {
             await client.connect();
 
@@ -193,7 +214,9 @@ app.get("/dates", (req, res) => {
                 list_of_documents.push(doc);
             }
 
-            res.status(200).json((list_of_documents[0]));
+            cache["/dates"] = list_of_documents[0];
+
+            res.status(200).json(list_of_documents[0]);
 
         } catch (err) {
             res.status(400).json({ "status": 400, "error_msg": "Could not connect to the database." });
@@ -202,7 +225,7 @@ app.get("/dates", (req, res) => {
         }
     }
 
-    run().catch(console.dir);
+    getData();
 
     
 })
@@ -224,4 +247,6 @@ function dateValidator(date) {
 
     return false;
 }
+
+
 

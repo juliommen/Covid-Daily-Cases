@@ -1,7 +1,7 @@
 {
   "name": "covid-daily-cases-api",
   "version": "0.0.1",
-  "description": "An api that retrieves detail data on Covid cases",
+  "description": "An api that retrieves detailed data on Covid cases",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,6 +10,7 @@
   "author": "Júlio Mendonça da Costa",
   "license": "Apache 2.0",
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "csv": "^6.1.0",
     "dotenv": "^8.2.0",
