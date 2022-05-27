@@ -2,7 +2,7 @@
 
 API for retrieving data about COVID cases of various locations around the world, detailing registered variants and its quantities by date (daily or accumulated).
 
-
+API url: 
 
 # Development tools
 
@@ -10,7 +10,7 @@ API for retrieving data about COVID cases of various locations around the world,
  - Framework: Node.Js.
  - Technologies: MongoDB. 
 
-# Installation and personal usage
+# Installation for personal usage and test
 
 - Download and extract repository files.
 - Download CSV available at: https://challenges.coode.sh/covid/data/covid-variants.csv.
