@@ -11,13 +11,18 @@ app.set('json spaces', 2)
 
 //Retornar um Status: 200 e uma Mensagem "Backend Challenge 2021 🏅 - Covid Daily Cases"
 app.get("/", (req, res) => {
-    res.status(200).send("Backend Challenge 2021 🏅 - Covid Daily ")
+    res.status(200).send({status:200,msg: "Backend Challenge 2021 🏅 - Covid Daily "})
 })
 
 
 //Listar todos os registros da base de dados no dia selecionado, agrupados por país e separados por variante.
 app.get("/cases/:date/count", (req, res) => {
     const data_input = req.params.date;
+
+    if (!dateValidator(data_input)) {
+        res.status(500).json({ "status": 500, "error_msg": "Incorrect date input. Use this format: 'yyyy-mm-dd'."  });
+        return;
+    }
 
     async function run() {
         try {
@@ -33,7 +38,7 @@ app.get("/cases/:date/count", (req, res) => {
                 {
                     $group: {
                         _id: "$location",
-                        variants: {
+                        cases: {
                             $push: { variant: "$variant", quantity: "$num_sequences" }
                         }
                     }
@@ -48,14 +53,19 @@ app.get("/cases/:date/count", (req, res) => {
             const aggCursor = collection.aggregate(pipeline);
 
             for await (let doc of aggCursor) {
-                doc = {"location":doc._id,"variants":doc.variants}
+                doc = {"location":doc._id,"cases":doc.cases}
                 list_of_documents.push(doc);
             }
 
-            res.status(200).json({ "covid_daily_cases": list_of_documents });
+            if (list_of_documents.length == 0) {
+                res.status(500).json({ "status": 500, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
+                return;
+            } 
 
+            res.status(200).json({ "date": data_input,"covid_daily_cases": list_of_documents });
+           
         } catch (err) {
-            console.log(err.stack);
+            res.status(400).json({ "status": 400, "error_msg":"Could not connect to the database."});
         } finally {
             await client.close();
         }
@@ -66,10 +76,16 @@ app.get("/cases/:date/count", (req, res) => {
 })
 
 
-//Listar todos os registros da base de dados, retornando a soma dos casos registrados de acordo com a data selecionada, 
+//Listar todos os registros da base de dados, retornando a soma dos casos registrados até a data selecionada, 
 //agrupados por país e separados por variante.
 app.get("/cases/:date/cumulative", (req, res) => {
     const data_input = req.params.date;
+
+    if (!dateValidator(data_input)) {
+        res.status(500).json({ "status": 500, "error_msg": "Incorrect date input. Use this format: 'yyyy-mm-dd'." });
+        return;
+    }
+
     async function run() {
         try {
             await client.connect();
@@ -90,20 +106,20 @@ app.get("/cases/:date/cumulative", (req, res) => {
                 {
                     $group: {
                         _id: "$_id.location",
-                        variants: {
+                        cases: {
                             $push: { variant: "$_id.variant", quantity: "$quantity" }
                         }
                     }
                 },
                 
-                { $unwind: '$variants' },
-                { $sort: { variants: 1 } },
+                { $unwind: '$cases' },
+                { $sort: { cases: 1 } },
 
                 {
                     $group: {
                         _id: "$_id",
-                        variants: {
-                            $push: { variant: "$variants.variant", quantity: "$variants.quantity" }
+                        cases: {
+                            $push: { variant: "$cases.variant", quantity: "$cases.quantity" }
                         }
                     }
                 },
@@ -116,14 +132,19 @@ app.get("/cases/:date/cumulative", (req, res) => {
 
             const aggCursor = collection.aggregate(pipeline);
             for await (let doc of aggCursor) {
-                doc = { "location": doc._id, "variants": doc.variants }
+                doc = { "location": doc._id, "cases": doc.cases }
                 list_of_documents.push(doc);
             }
 
-            res.status(200).json({ "covid_cumulative_cases": list_of_documents });
+            if (list_of_documents.length == 0) {
+                res.status(500).json({ "status": 500, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
+                return;
+            }
 
+            res.status(200).json({ "date": data_input, "covid_accumulated_cases": list_of_documents });
+            
         } catch (err) {
-            console.log(err.stack);
+            res.status(400).json({ "status": 400, "error_msg": "Could not connect to the database." });
         } finally {
             await client.close();
         }
@@ -157,11 +178,11 @@ app.get("/dates", (req, res) => {
                 {
                     $group: {
                         _id: null,
-                        dates_available: { $push: "$_id" }
+                        available_dates: { $push: "$_id" }
                     }
                 },
 
-                { $project: { _id: 0, dates_available: 1} },
+                { $project: { _id: 0, available_dates: 1} },
 
             ];
 
@@ -175,7 +196,7 @@ app.get("/dates", (req, res) => {
             res.status(200).json((list_of_documents[0]));
 
         } catch (err) {
-            console.log(err.stack);
+            res.status(400).json({ "status": 400, "error_msg": "Could not connect to the database." });
         } finally {
             await client.close();
         }
@@ -187,7 +208,20 @@ app.get("/dates", (req, res) => {
 })
 
 
-app.listen(3333, () => {
-    console.log(`Listening at http://localhost:3333`)
+app.listen(8080, () => {
+    console.log(`Listening at http://localhost:8080`)
 })
+
+
+function dateValidator(date) {
+
+    var date_check = new Date(parseInt(date.slice(0, 4)), parseInt(date.slice(5, 7)) - 1, parseInt(date.slice(8)));
+    date_check = date_check.toISOString().slice(0, 10)
+
+    if (date_check == date) {
+        return true;
+    }
+
+    return false;
+}
 
