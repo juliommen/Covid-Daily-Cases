@@ -7,20 +7,22 @@ chai.use(chaiHttp);
 
 //Main Route
 describe("Main Route Test", function(){
-    it('server is live', function(done) {
-            chai.request(baseUrl)
-            .get('/')
-            .end(function (err, res) {
-                expect(res).to.have.status(200);
-                expect(res.body.msg).to.equal("Backend Challenge 2022 🏅 - Covid Daily ");
-                done();
-            });
-        })
+    it('server is live', function (done) {
+        this.timeout(5000);
+        chai.request(baseUrl)
+        .get('/')
+        .end(function (err, res) {
+            expect(res).to.have.status(200);
+            expect(res.body.msg).to.equal("Backend Challenge 2022 🏅 - Covid Daily ");
+            done();
+        });
+    })
 })
 
 //Dates route
 describe("Available dates route test", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/dates')
             .end(function (err, res) {
@@ -34,6 +36,7 @@ describe("Available dates route test", function () {
 //Count rote
 describe("Count cases route test - OK", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2020-05-11/count')
             .end(function (err, res) {
@@ -46,6 +49,7 @@ describe("Count cases route test - OK", function () {
 
 describe("Count cases route test - No data", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2023-05-11/count')
             .end(function (err, res) {
@@ -58,6 +62,7 @@ describe("Count cases route test - No data", function () {
 
 describe("Count cases route test - Invalid date 1", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2020-13-11/count')
             .end(function (err, res) {
@@ -71,6 +76,7 @@ describe("Count cases route test - Invalid date 1", function () {
 describe("Count cases route test - Invalid date 2", function () {
     this.timeout(5000);
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2020-12-32/count')
             .end(function (err, res) {
@@ -83,6 +89,7 @@ describe("Count cases route test - Invalid date 2", function () {
 
 describe("Count cases route test - Invalid date 3", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/20201230/count')
             .end(function (err, res) {
@@ -96,6 +103,7 @@ describe("Count cases route test - Invalid date 3", function () {
 //Accumulated route
 describe("Accumulated cases route test - OK", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2022-01-05/cumulative')
             .end(function (err, res) {
@@ -108,6 +116,7 @@ describe("Accumulated cases route test - OK", function () {
 
 describe("Accumulated cases route test - No data", function () {
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2019-01-05/cumulative')
             .end(function (err, res) {
@@ -119,8 +128,8 @@ describe("Accumulated cases route test - No data", function () {
 })
 
 describe("Accumulated cases route test - Invalid date 1", function () {
-    this.timeout(5000);
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2020-13-11/cumulative')
             .end(function (err, res) {
@@ -132,8 +141,8 @@ describe("Accumulated cases route test - Invalid date 1", function () {
 })
 
 describe("Accumulated cases route test - Invalid date 2", function () {
-    this.timeout(5000);
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/2020-12-32/cumulative')
             .end(function (err, res) {
@@ -146,8 +155,8 @@ describe("Accumulated cases route test - Invalid date 2", function () {
 
 
 describe("Accumulated cases route test - Invalid date 3", function () {
-    this.timeout(5000);
     it('server is live', function (done) {
+        this.timeout(5000);
         chai.request(baseUrl)
             .get('/cases/20201230/cumulative')
             .end(function (err, res) {
