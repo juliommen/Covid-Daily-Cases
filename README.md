@@ -2,17 +2,17 @@
 
 API for retrieving data about COVID cases of various locations around the world, detailing registered variants and its quantities by date (daily or accumulated).
 
-API url: 
+API url: https://coviddailycases.us-south.cf.appdomain.cloud/
 
 # Development tools
 
  - Languages: JavaScript.
  - Framework: Node.Js.
- - Technologies: MongoDB. 
+ - Database: MongoDB. 
 
 # Installation for personal usage and test
 
-- Download and extract repository files.
+- Download and extract the repository files at: https://github.com/juliommen/covid-daily-cases-api.git.
 - Download CSV available at: https://challenges.coode.sh/covid/data/covid-variants.csv.
 - Move the CSV to the project folder.
 - Create a database in  https://www.mongodb.com/cloud/atlas. Set user credentials and IP access.

@@ -1,4 +1,4 @@
 apps:
-- name: covid-daily-cases-api
+- name: CovidDailyCases
   random-route: true
   memory: 128M
