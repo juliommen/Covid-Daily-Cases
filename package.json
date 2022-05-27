@@ -1,11 +1,11 @@
 {
-  "name": "covid-daily-cases-api",
-  "version": "1.0.2",
-  "description": "An api that retrieves detailed data on Covid cases",
-  "main": "server.js",
+  "name": "Covid Daily Cases API",
+  "version": "1.0.0",
+  "description": "API that retrieves detailed data on Covid cases",
+  "main": "./src/server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "mocha ./unit-tests"
+    "start": "node ./src/server.js",
+    "test": "mocha ./tests"
   },
   "author": "Júlio Mendonça da Costa",
   "license": "Apache 2.0",

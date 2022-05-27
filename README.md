@@ -44,15 +44,16 @@ Change the date to get other accumulated results.
 
 # Installation for personal usage and test
 
-- Download and extract the repository files at: https://github.com/juliommen/covid-daily-cases-api.git.
+- Clone or download and extract the repository files available at: https://github.com/juliommen/covid-daily-cases-api.git.
 - Download CSV available at: https://challenges.coode.sh/covid/data/covid-variants.csv.
 - Move the CSV to the project folder.
 - Create a database in  https://www.mongodb.com/cloud/atlas. Set user credentials and IP access.
 - Create '.env' file with the database credentials (MONGO_USER and MONGO_PASSWORD) in the project folder.
 - Run 'npm install' in the project folder path.
-- Run 'node inserDataMongo.js' to load the CSV into the database.
-- Run 'npm start' in the project folder path.
+- Access 'src' folder and run 'node inserDataMongo.js' to load the CSV into the database.
+- Run 'npm start' from the project folder root path.
 - Check the routes in https://localhost:8080.
+- Additional: Run 'npm run test' to check the endpoints.
 
 
 This is a challenge by <a href="https://coodesh.com/">Coodesh</a>.

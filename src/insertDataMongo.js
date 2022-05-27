@@ -16,14 +16,13 @@ var csv_parser = parse({ columns: false }, function (err, records) {
                 "variant": records[i][2],
                 "num_sequences": parseInt(records[i][3]),
             }
-            list_of_documents.push(document);
+            list_of_documents.push(document);   
         }
     }
-
     insertData(list_of_documents);
 });
 
-fs.createReadStream('./covid-variants.csv').pipe(csv_parser);
+fs.createReadStream('.././covid-variants.csv').pipe(csv_parser);
 
 async function insertData(list_of_documents) {
 
