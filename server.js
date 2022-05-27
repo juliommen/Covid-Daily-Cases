@@ -11,9 +11,9 @@ const cache = {};
 
 app.set('json spaces', 2)
 
-//Retornar um Status: 200 e uma Mensagem "Backend Challenge 2021 🏅 - Covid Daily Cases"
+//Retornar um Status: 200 e uma Mensagem "Backend Challenge 2022 🏅 - Covid Daily Cases"
 app.get("/", (req, res) => {
-    res.status(200).send({status:200,msg: "Backend Challenge 2021 🏅 - Covid Daily "})
+    res.status(200).send({status:200,msg: "Backend Challenge 2022 🏅 - Covid Daily "})
 })
 
 
