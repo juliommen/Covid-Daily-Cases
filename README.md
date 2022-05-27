@@ -10,9 +10,7 @@ The API has four 'get' routes.
 
 ### Main route
 
-```
 https://coviddailycases.us-south.cf.appdomain.cloud/
-```
 
 This route returns a simple welcome message.
 
