@@ -2,7 +2,9 @@
 
 API for retrieving data about COVID cases of various locations around the world, detailing registered variants and its quantities by date (daily or accumulated).
 
-# Development Tools:
+
+
+# Development tools
 
  - Languages: JavaScript.
  - Framework: Node.Js.
@@ -21,7 +23,7 @@ API for retrieving data about COVID cases of various locations around the world,
 - Check the routes in https://localhost:8080.
 
 
-# This is a challenge by Coodesh
+This is a challenge by <a href="https://coodesh.com/">Coodesh</a>.
 
 
 
