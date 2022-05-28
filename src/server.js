@@ -14,7 +14,7 @@ const collectionName = "covid-daily-cases";
 const cache = {};
 
 app.get("/", (req, res) => {
-    res.status(200).send({status:200,msg: "Backend Challenge 2022 🏅 - Covid Daily "})
+    res.status(200).send({status:200,msg: "Backend Challenge 2022 🏅 - Covid Daily Cases"})
 })
 
 app.get("/cases/:date/count", (req, res) => {
