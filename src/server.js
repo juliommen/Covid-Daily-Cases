@@ -6,7 +6,7 @@ const cors_app = require('cors');
 //const swaggerDocument = require('../openapi.json');
 //const OpenApiValidator = require('express-openapi-validator');
 
-//app.use(cors_app());
+app.use(cors_app());
 //app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //app.use(
 //    OpenApiValidator.middleware({
