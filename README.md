@@ -4,6 +4,8 @@ API to retrieve data on registered cases of COVID in various locations around th
 
 Base url: https://coviddailycases.us-south.cf.appdomain.cloud/
 
+Open API 3.0 Documentation for this project: https://coviddailycases.us-south.cf.appdomain.cloud/docs
+
 # Instructions
 
 The API has four `[GET]` routes.
