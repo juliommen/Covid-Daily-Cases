@@ -1,4 +1,4 @@
-# Covid Daily Cases Api
+# Covid Daily Cases API
 
 API to retrieve data on registered cases of COVID in various locations around the world, detailing variants and its quantities by date (daily or accumulated).
 
