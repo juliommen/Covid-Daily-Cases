@@ -1,5 +1,4 @@
 const client = require("./configMongoClient.js");
-
 const fs = require('fs');
 const { parse } = require('csv-parse');
 
@@ -8,7 +7,6 @@ var list_of_documents = [];
 var csv_parser = parse({ columns: false }, function (err, records) {
 
     for (var i = 1; i < records.length; i++) {
-
         if (records[i][2] != "non_who") {
             let document = {
                 "location": records[i][0],

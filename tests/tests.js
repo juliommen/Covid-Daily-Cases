@@ -5,10 +5,29 @@ const baseUrl = "https://coviddailycases.us-south.cf.appdomain.cloud"
 
 chai.use(chaiHttp);
 
+var test_cases_for_valide_date = [
+    '/cases/2020-06-22/',
+    '/cases/2020-09-28/',
+    '/cases/2021-03-22/',
+    '/cases/2021-05-17/',
+    '/cases/2021-12-13/',
+];
+
+var test_cases_for_invalid_date = [
+    '/cases/20201230/',
+    '/cases/2020123/',
+    '/cases/xyzxyz/',
+    '/cases/2020-13-30/',
+    '/cases/202012-30/',
+    '/cases/2020-12-32/',
+    '/cases/25-05-2020/',
+    '/cases/05-25-2020/',
+];
+
 //Main Route
 describe("Main Route Test", function(){
     it('server is live', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
         chai.request(baseUrl)
         .get('/')
         .end(function (err, res) {
@@ -22,7 +41,7 @@ describe("Main Route Test", function(){
 //Dates route
 describe("Available dates route test", function () {
     it('server is live', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
         chai.request(baseUrl)
             .get('/dates')
             .end(function (err, res) {
@@ -35,21 +54,23 @@ describe("Available dates route test", function () {
 
 //Count rote
 describe("Count cases route test - OK", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2020-05-11/count')
-            .end(function (err, res) {
-                expect(res).to.have.status(200);
-                expect(res.body.date).to.equal("2020-05-11");
-                done();
-            });
-    })
+    test_cases_for_valide_date.forEach((test_case) => {
+        it('server is live', function (done) {
+            this.timeout(10000);
+            chai.request(baseUrl)
+                .get(test_case+'count')
+                .end(function (err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body.date).to.equal(test_case.slice(7,17));
+                    done();
+                });
+        })
+    });
 })
 
-describe("Count cases route test - No data", function () {
+describe("Count cases route test - No data found", function () {
     it('server is live', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
         chai.request(baseUrl)
             .get('/cases/2023-05-11/count')
             .end(function (err, res) {
@@ -60,63 +81,40 @@ describe("Count cases route test - No data", function () {
     })
 })
 
-describe("Count cases route test - Invalid date 1", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2020-13-11/count')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
+describe("Count cases route test - Invalid date", function () {
+    test_cases_for_invalid_date.forEach((test_case) => {
+        it('server is live', function (done) {
+            this.timeout(10000);
+            chai.request(baseUrl)
+                .get(test_case + "count")
+                .end(function (err, res) {
+                    expect(res).to.have.status(400);
+                    expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
+                    done();
+                });
+        })
+    });
 })
 
-describe("Count cases route test - Invalid date 2", function () {
-    this.timeout(5000);
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2020-12-32/count')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
-})
-
-describe("Count cases route test - Invalid date 3", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/20201230/count')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
-})
-
-//Accumulated route
+//Cumulative route
 describe("Accumulated cases route test - OK", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2022-01-05/cumulative')
-            .end(function (err, res) {
-                expect(res).to.have.status(200);
-                expect(res.body.date).to.equal("2022-01-05");
-                done();
-            });
-    })
+    test_cases_for_valide_date.forEach((test_case) => {
+        it('server is live', function (done) {
+            this.timeout(10000);
+            chai.request(baseUrl)
+                .get(test_case + 'cumulative')
+                .end(function (err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body.date).to.equal(test_case.slice(7, 17));
+                    done();
+                });
+        })
+    });
 })
 
-describe("Accumulated cases route test - No data", function () {
+describe("Accumulated cases route test - No data found", function () {
     it('server is live', function (done) {
-        this.timeout(5000);
+        this.timeout(10000);
         chai.request(baseUrl)
             .get('/cases/2019-01-05/cumulative')
             .end(function (err, res) {
@@ -127,42 +125,17 @@ describe("Accumulated cases route test - No data", function () {
     })
 })
 
-describe("Accumulated cases route test - Invalid date 1", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2020-13-11/cumulative')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
-})
-
-describe("Accumulated cases route test - Invalid date 2", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/2020-12-32/cumulative')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
-})
-
-
-describe("Accumulated cases route test - Invalid date 3", function () {
-    it('server is live', function (done) {
-        this.timeout(5000);
-        chai.request(baseUrl)
-            .get('/cases/20201230/cumulative')
-            .end(function (err, res) {
-                expect(res).to.have.status(400);
-                expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
-                done();
-            });
-    })
+describe("Accumulated cases route test - Invalid date", function () {
+    test_cases_for_invalid_date.forEach((test_case) => {
+        it('server is live', function (done) {
+            this.timeout(10000);
+            chai.request(baseUrl)
+                .get(test_case+"cumulative")
+                .end(function (err, res) {
+                    expect(res).to.have.status(400);
+                    expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
+                    done();
+                });
+        })
+    });
 })

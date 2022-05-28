@@ -2,38 +2,20 @@
 const app = new express();
 const client = require("./configMongoClient.js");
 const cors_app = require('cors');
-//const swaggerUi = require('swagger-ui-express');
-//const swaggerDocument = require('../openapi.json');
-//const OpenApiValidator = require('express-openapi-validator');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../openapi.json');
 
 app.use(cors_app());
-//app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-//app.use(
-//    OpenApiValidator.middleware({
-//        apiSpec: swaggerDocument,
-//        validateRequests: true,
-//        validateResponses: true, 
-//    }),
-//);
-
-//app.use((err, req, res, next) => {
-//    res.status(err.status || 500).json({
-//        message: err.message,
-//        errors: err.errors,
-//    });
-//});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.set('json spaces', 2)
 
 const dbName = "kaggle";
 const collectionName = "covid-daily-cases";
-
 const cache = {};
-
-app.set('json spaces', 2)
 
 app.get("/", (req, res) => {
     res.status(200).send({status:200,msg: "Backend Challenge 2022 🏅 - Covid Daily "})
 })
-
 
 app.get("/cases/:date/count", (req, res) => {
     const data_input = req.params.date;
@@ -51,14 +33,10 @@ app.get("/cases/:date/count", (req, res) => {
     async function getData() {
         try {
             await client.connect();
-
             const database = client.db(dbName);
             const collection = database.collection(collectionName);
-
             const pipeline = [
-
                 { $match: { date: data_input } },
-          
                 {
                     $group: {
                         _id: "$location",
@@ -67,25 +45,19 @@ app.get("/cases/:date/count", (req, res) => {
                         }
                     }
                 },
-
                 { $sort: { _id: 1 } },
-
             ];
 
             var list_of_documents = [];
-
             const aggCursor = collection.aggregate(pipeline);
-
             for await (let doc of aggCursor) {
                 doc = {"location":doc._id,"cases":doc.cases}
                 list_of_documents.push(doc);
             }
-
             if (list_of_documents.length == 0) {
                 res.status(404).json({ "status": 404, "error_msg": "No data found for this particular date. Find available dates accessing the route '/dates'." });
                 return;
             } 
-
             cache["/cases/+" + data_input + "/count"] = list_of_documents;
 
             res.status(200).json({ "date": data_input,"covid_daily_cases": list_of_documents });
@@ -97,10 +69,8 @@ app.get("/cases/:date/count", (req, res) => {
         }
     }
 
-    getData();
-    
+    getData();   
 })
-
 
 app.get("/cases/:date/cumulative", (req, res) => {
     const data_input = req.params.date;
@@ -118,14 +88,10 @@ app.get("/cases/:date/cumulative", (req, res) => {
     async function getData() {
         try {
             await client.connect();
-
             const database = client.db(dbName);
             const collection = database.collection(collectionName);
-
             const pipeline = [
-     
                 { $match: { date: { $lte: data_input } } },
-
                 {
                     $group: {
                         _id: { location: "$location", variant:"$variant" },
@@ -140,10 +106,8 @@ app.get("/cases/:date/cumulative", (req, res) => {
                         }
                     }
                 },
-                
                 { $unwind: '$cases' },
                 { $sort: { cases: 1 } },
-
                 {
                     $group: {
                         _id: "$_id",
@@ -152,13 +116,10 @@ app.get("/cases/:date/cumulative", (req, res) => {
                         }
                     }
                 },
-
-                { $sort: { _id: 1 } },   
-                
+                { $sort: { _id: 1 } },     
             ];
 
             var list_of_documents = [];
-
             const aggCursor = collection.aggregate(pipeline);
             for await (let doc of aggCursor) {
                 doc = { "location": doc._id, "cases": doc.cases }
@@ -169,7 +130,6 @@ app.get("/cases/:date/cumulative", (req, res) => {
                 res.status(404).json({ "status": 404, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
                 return;
             }
-
             cache["/cases/+" + data_input + "/cumulative"] = list_of_documents;
 
             res.status(200).json({ "date": data_input, "covid_accumulated_cases": list_of_documents });
@@ -184,7 +144,6 @@ app.get("/cases/:date/cumulative", (req, res) => {
     getData();
 })
 
-
 app.get("/dates", (req, res) => {
 
     if (cache["/dates"] != undefined) {
@@ -195,39 +154,30 @@ app.get("/dates", (req, res) => {
     async function getData() {
         try {
             await client.connect();
-
             const database = client.db(dbName);
             const collection = database.collection(collectionName);
-
             const pipeline = [
-
                 {
                     $group: {
                         _id: "$date",
                         quantity: { $sum: "$num_sequences" }
                     }
                 },
-
                 { $sort: { _id: 1 } },
-
                 {
                     $group: {
                         _id: null,
                         available_dates: { $push: "$_id" }
                     }
                 },
-
                 { $project: { _id: 0, available_dates: 1} },
-
             ];
 
             var list_of_documents = [];
-
             const aggCursor = collection.aggregate(pipeline);
             for await (const doc of aggCursor) {
                 list_of_documents.push(doc);
             }
-
             cache["/dates"] = list_of_documents[0];
 
             res.status(200).json(list_of_documents[0]);
@@ -239,16 +189,12 @@ app.get("/dates", (req, res) => {
         }
     }
 
-    getData();
-
-    
+    getData();    
 })
-
 
 app.listen(8080, () => {
     console.log(`Listening at http://localhost:8080`)
 })
-
 
 function dateValidator(date) {
 

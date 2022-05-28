@@ -14,7 +14,7 @@ The API has four `[GET]` routes.
 
 https://coviddailycases.us-south.cf.appdomain.cloud/
 
-This route returns a simple welcome message.
+This route returns a simple message.
 
 ### Get available dates route
 
@@ -43,6 +43,7 @@ Change the date to get other accumulated results. Input date format accepted: `y
  - Languages: JavaScript.
  - Framework: Node.Js.
  - Database: MongoDB.
+ - External Libraries: Express, Cors, CSV, Dotenv,Mocha, Chai, Chai-HTTP, Swagger-UI-Express.
 
 # Installation for personal usage and test
 
