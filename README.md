@@ -61,5 +61,7 @@ Change the date to get other accumulated results. Input date format accepted: `y
 
 > This is a challenge by <a href="https://coodesh.com/">Coodesh</a>.
 
+Presentation URL: https://www.loom.com/embed/6825eb0496254959aaa1dbf99296dcf2
+
 
 
