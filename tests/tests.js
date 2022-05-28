@@ -53,7 +53,7 @@ describe("Count cases route test - No data", function () {
         chai.request(baseUrl)
             .get('/cases/2023-05-11/count')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(404);
                 expect(res.body.error_msg).to.equal("No data found for this particular date. Find available dates accessing the route '/dates'.");
                 done();
             });
@@ -66,7 +66,7 @@ describe("Count cases route test - Invalid date 1", function () {
         chai.request(baseUrl)
             .get('/cases/2020-13-11/count')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
@@ -80,7 +80,7 @@ describe("Count cases route test - Invalid date 2", function () {
         chai.request(baseUrl)
             .get('/cases/2020-12-32/count')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
@@ -93,7 +93,7 @@ describe("Count cases route test - Invalid date 3", function () {
         chai.request(baseUrl)
             .get('/cases/20201230/count')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
@@ -120,7 +120,7 @@ describe("Accumulated cases route test - No data", function () {
         chai.request(baseUrl)
             .get('/cases/2019-01-05/cumulative')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(404);
                 expect(res.body.error_msg).to.equal("No data found until this particular date. Find available dates accessing the route '/dates'.");
                 done();
             });
@@ -133,7 +133,7 @@ describe("Accumulated cases route test - Invalid date 1", function () {
         chai.request(baseUrl)
             .get('/cases/2020-13-11/cumulative')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
@@ -146,7 +146,7 @@ describe("Accumulated cases route test - Invalid date 2", function () {
         chai.request(baseUrl)
             .get('/cases/2020-12-32/cumulative')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });
@@ -160,7 +160,7 @@ describe("Accumulated cases route test - Invalid date 3", function () {
         chai.request(baseUrl)
             .get('/cases/20201230/cumulative')
             .end(function (err, res) {
-                expect(res).to.have.status(500);
+                expect(res).to.have.status(400);
                 expect(res.body.error_msg).to.equal("Invalid date input. Use this format: 'yyyy-mm-dd'.");
                 done();
             });

@@ -1,7 +1,7 @@
 {
   "name": "Covid Daily Cases API",
   "version": "1.0.0",
-  "description": "API that retrieves detailed data on Covid cases",
+  "description": "API that retrieves detailed data on Covid cases.",
   "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
@@ -10,16 +10,17 @@
   "author": "Júlio Mendonça da Costa",
   "license": "Apache 2.0",
   "dependencies": {
-    "axios": "^0.27.2",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "csv": "^6.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-openapi-validator": "^4.13.7",
     "install": "^0.13.0",
     "mocha": "^10.0.0",
     "mongodb": "^4.6.0",
-    "npm": "^8.11.0"
+    "npm": "^8.11.0",
+    "swagger-ui-express": "^4.4.0"
   }
 }

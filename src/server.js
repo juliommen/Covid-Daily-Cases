@@ -2,7 +2,19 @@
 const app = new express();
 const client = require("./configMongoClient.js");
 const cors_app = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../openapi.json');
+const OpenApiValidator = require('express-openapi-validator');
+
 app.use(cors_app());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+    OpenApiValidator.middleware({
+        apiSpec: swaggerDocument,
+        validateRequests: true,
+        validateResponses: true, 
+    }),
+);
 
 const dbName = "kaggle";
 const collectionName = "covid-daily-cases";
@@ -20,7 +32,7 @@ app.get("/cases/:date/count", (req, res) => {
     const data_input = req.params.date;
 
     if (!dateValidator(data_input)) {
-        res.status(500).json({ "status": 500, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'."  });
+        res.status(400).json({ "status": 400, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'."  });
         return;
     }
 
@@ -63,7 +75,7 @@ app.get("/cases/:date/count", (req, res) => {
             }
 
             if (list_of_documents.length == 0) {
-                res.status(500).json({ "status": 500, "error_msg": "No data found for this particular date. Find available dates accessing the route '/dates'." });
+                res.status(404).json({ "status": 404, "error_msg": "No data found for this particular date. Find available dates accessing the route '/dates'." });
                 return;
             } 
 
@@ -72,7 +84,7 @@ app.get("/cases/:date/count", (req, res) => {
             res.status(200).json({ "date": data_input,"covid_daily_cases": list_of_documents });
            
         } catch (err) {
-            res.status(400).json({ "status": 400, "error_msg":"Could not connect to the database."});
+            res.status(500).json({ "status": 500, "error_msg":"Could not connect to the database."});
         } finally {
             await client.close();
         }
@@ -87,7 +99,7 @@ app.get("/cases/:date/cumulative", (req, res) => {
     const data_input = req.params.date;
 
     if (!dateValidator(data_input)) {
-        res.status(500).json({ "status": 500, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'." });
+        res.status(400).json({ "status": 400, "error_msg": "Invalid date input. Use this format: 'yyyy-mm-dd'." });
         return;
     }
 
@@ -147,7 +159,7 @@ app.get("/cases/:date/cumulative", (req, res) => {
             }
 
             if (list_of_documents.length == 0) {
-                res.status(500).json({ "status": 500, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
+                res.status(404).json({ "status": 404, "error_msg": "No data found until this particular date. Find available dates accessing the route '/dates'." });
                 return;
             }
 
@@ -156,7 +168,7 @@ app.get("/cases/:date/cumulative", (req, res) => {
             res.status(200).json({ "date": data_input, "covid_accumulated_cases": list_of_documents });
             
         } catch (err) {
-            res.status(400).json({ "status": 400, "error_msg": "Could not connect to the database." });
+            res.status(500).json({ "status": 500, "error_msg": "Could not connect to the database." });
         } finally {
             await client.close();
         }
@@ -214,7 +226,7 @@ app.get("/dates", (req, res) => {
             res.status(200).json(list_of_documents[0]);
 
         } catch (err) {
-            res.status(400).json({ "status": 400, "error_msg": "Could not connect to the database." });
+            res.status(500).json({ "status": 500, "error_msg": "Could not connect to the database." });
         } finally {
             await client.close();
         }

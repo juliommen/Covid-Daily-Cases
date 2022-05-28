@@ -1,0 +1,315 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "API to retrieve data on registered cases of COVID.",
+    "version": "1.0.0",
+    "title": "Covid Daily Cases API",
+    "contact": {
+      "email": "juliommen@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://coviddailycases.us-south.cf.appdomain.cloud/",
+      "description": "Production Server"
+    },
+    {
+      "url": "http://localhost:8080/",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/dates": {
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "List available dates",
+        "description": "Returns a list of available dates that can be used to query for registered cases of COVID, whereas daily or accumulated, using the other two routes.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dates"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cases/{date}/count": {
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "List registered cases",
+        "description": "Returns the quantity of all the registered cases of COVID in the inputed date, separeted by variants and grouped by country.",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "description": "The date to query for registered cases of COVID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Count"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404-1"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cases/{date}/cumulative": {
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "List registered cases",
+        "description": "This route returns the quantity of all the registered cases of COVID in the inputed date, separeted by variants and grouped by country.",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "description": "The date to query for registered cases of COVID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cumulative"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error404-2"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application.json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Dates": {
+        "type": "object",
+        "properties": {
+          "available_dates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Count": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "covid_daily_cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "cases": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "variant": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Cumulative": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "covid_accumulated_cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "cases": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "variant": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error400": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "error_msg": {
+            "type": "string",
+            "example": "Invalid date input. Use this format: 'yyyy-mm-dd'."
+          }
+        }
+      },
+      "Error404-1": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 404
+          },
+          "error_msg": {
+            "type": "string",
+            "example": "No data found for this particular date. Find available dates accessing the route '/dates'."
+          }
+        }
+      },
+      "Error404-2": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 404
+          },
+          "error_msg": {
+            "type": "string",
+            "example": "No data found until this particular date. Find available dates accessing the route '/dates'."
+          }
+        }
+      },
+      "Error500": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 500
+          },
+          "error_msg": {
+            "type": "string",
+            "example": "Could not connect to the database."
+          }
+        }
+      }
+    }
+  }
+}
