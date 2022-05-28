@@ -2,26 +2,26 @@
 const app = new express();
 const client = require("./configMongoClient.js");
 const cors_app = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../openapi.json');
-const OpenApiValidator = require('express-openapi-validator');
+//const swaggerUi = require('swagger-ui-express');
+//const swaggerDocument = require('../openapi.json');
+//const OpenApiValidator = require('express-openapi-validator');
 
-app.use(cors_app());
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(
-    OpenApiValidator.middleware({
-        apiSpec: swaggerDocument,
-        validateRequests: true,
-        validateResponses: true, 
-    }),
-);
+//app.use(cors_app());
+//app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use(
+//    OpenApiValidator.middleware({
+//        apiSpec: swaggerDocument,
+//        validateRequests: true,
+//        validateResponses: true, 
+//    }),
+//);
 
-app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-        message: err.message,
-        errors: err.errors,
-    });
-});
+//app.use((err, req, res, next) => {
+//    res.status(err.status || 500).json({
+//        message: err.message,
+//        errors: err.errors,
+//    });
+//});
 
 const dbName = "kaggle";
 const collectionName = "covid-daily-cases";
