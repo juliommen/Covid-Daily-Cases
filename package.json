@@ -1,5 +1,5 @@
 {
-  "name": "Covid Daily Cases API",
+  "name": "covid-daily-cases-api",
   "version": "1.0.0",
   "description": "API that retrieves detailed data on Covid cases.",
   "main": "./src/server.js",
