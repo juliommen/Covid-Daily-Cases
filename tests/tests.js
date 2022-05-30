@@ -32,7 +32,7 @@ describe("Main Route Test", function(){
         .get('/')
         .end(function (err, res) {
             expect(res).to.have.status(200);
-            expect(res.body.msg).to.equal("Backend Challenge 2022 🏅 - Covid Daily ");
+            expect(res.body.msg).to.equal("Backend Challenge 2022 🏅 - Covid Daily Cases");
             done();
         });
     })
