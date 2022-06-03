@@ -8,9 +8,9 @@ Open API 3.0 Documentation for this project: https://coviddailycases.us-south.cf
 
 # Instructions
 
-The API has four `[GET]` routes.
+The API has a base route and 3 `[GET]` routes.
 
-### Main route
+### Base route
 
 https://coviddailycases.us-south.cf.appdomain.cloud/
 
@@ -57,10 +57,6 @@ Change the date to get other accumulated results. Input date format accepted: `y
 - Go back and run 'npm start' from the project folder path.
 - Check routes in https://localhost:8080.
 - Additional: Run 'npm run test' to run unit tests.
-
-> This is a challenge by <a href="https://coodesh.com/">Coodesh</a>.
-
-Presentation URL: https://www.loom.com/embed/6825eb0496254959aaa1dbf99296dcf2
 
 
 
