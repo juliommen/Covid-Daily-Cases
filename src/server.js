@@ -28,7 +28,7 @@ app.get("/cases/:date/count", (req, res) => {
     if (cache["/cases/+" + data_input + "/count"] != undefined) {
         res.status(200).json({ "date": data_input, "covid_daily_cases": cache["/cases/+" + data_input + "/count"] });
         return;
-    }
+    } 
 
     async function getData() {
         try {
